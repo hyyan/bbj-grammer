@@ -1,0 +1,480 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "BBj",
+  "scopeName": "source.bbj",
+  "patterns": [
+    {
+      "include": "#code"
+    }
+  ],
+  "repository": {
+    "code": {
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#parens"
+        },
+        {
+          "include": "#keywords"
+        },
+        {
+          "include": "primitive-types"
+        },
+        {
+          "include": "#controlls"
+        },
+        {
+          "include": "#variables"
+        },
+        {
+          "include": "#constants-and-special-vars"
+        },
+        {
+          "include": "#strings"
+        },
+        {
+          "include": "#numbers"
+        },
+        {
+          "include": "#logical"
+        },
+        {
+          "include": "#entity"
+        },
+        {
+          "include": "#function-call"
+        },
+        {
+          "include": "#object"
+        },
+        {
+          "include": "#methods"
+        },
+        {
+          "include": "#parameters"
+        },
+        {
+          "include": "#properties"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.bbj",
+          "match": "(?i)(?<=^|\\s)rem(?=\\s).*"
+        },
+        {
+          "begin": "^\\s*/\\*\\*(?!/)",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.bbj"
+            }
+          },
+          "end": "\\*/",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.bbj"
+            }
+          },
+          "name": "comment.block.bbjdoc.bbj",
+          "patterns": [
+            {
+              "match": "@(author|deprecated|return|see|serial|since|version)\\b",
+              "name": "keyword.other.documentation.bbjdoc.bbj"
+            },
+            {
+              "match": "(@param)\\s+(\\S+)",
+              "captures": {
+                "1": {
+                  "name": "keyword.other.documentation.bbjdoc.bbj"
+                },
+                "2": {
+                  "name": "variable.parameter.bbj"
+                }
+              }
+            },
+            {
+              "match": "(@(?:exception|throws))\\s+(\\S+)",
+              "captures": {
+                "1": {
+                  "name": "keyword.other.documentation.bbjdoc.bbj"
+                },
+                "2": {
+                  "name": "entity.name.type.class.bbj"
+                }
+              }
+            },
+            {
+              "match": "{(@link)\\s+(\\S+)?#([\\w$]+\\s*\\([^\\(\\)]*\\)).*}",
+              "captures": {
+                "1": {
+                  "name": "keyword.other.documentation.bbjdoc.bbj"
+                },
+                "2": {
+                  "name": "entity.name.type.class.bbj"
+                },
+                "3": {
+                  "name": "variable.parameter.bbj"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "parens": {
+      "patterns": [
+        {
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.bracket.round.bbj"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.bracket.round.bbj"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#code"
+            }
+          ]
+        },
+        {
+          "begin": "\\[",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.bracket.square.bbj"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.bracket.square.bbj"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#code"
+            }
+          ]
+        },
+        {
+          "begin": "{",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.bracket.curly.bbj"
+            }
+          },
+          "end": "}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.bracket.curly.bbj"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#code"
+            }
+          ]
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.operator.new",
+          "match": "(?i)(?<=\\s|^|=|\\()(new)(?=\\s)"
+        },
+        {
+          "name": "storage.modifier.package.java",
+          "match": "(?i)(?<=\\s|^|=|\\()(use)(?=\\s)"
+        },
+        {
+          "match": "(?i)\\bthrow\\b",
+          "name": "keyword.control.throw.bbj"
+        },
+        {
+          "match": "\\?|:",
+          "name": "keyword.control.ternary.bbj"
+        },
+        {
+          "match": "(\\-|\\+|\\*|\\/|%)",
+          "name": "keyword.operator.arithmetic.bbj"
+        }
+      ]
+    },
+    "primitive-types": {
+      "match": "\\b(BBjNumber|BBjInt|BBjString)\\b",
+      "name": "storage.type.primitive.bbj",
+      "patterns": [
+        {
+          "include": "#code"
+        }
+      ]
+    },
+    "controlls": {
+      "patterns": [
+        {
+          "name": "keyword.control",
+          "match": "(?i)(?<=^|\\s|;)(if|then|else|endif|fi|while|wend|for|to|step|next|switch|case|swend|break|continue|enter|escape|exit|release|sqclose)(?=\\s|\\()"
+        }
+      ]
+    },
+    "variables": {
+      "patterns": [
+        {
+          "match": "(?i)(#)?(\\w+\\.)?\\w+\\$(?=\\s|=|<|>|\\(|\\)|,|\\+|:|;|\\[)",
+          "name": "variable.bbj"
+        },
+        {
+          "match": "(?i)(#)?\\w+!(?=\\s|=|.|\\(|\\)|,)",
+          "name": "variable.bbj"
+        },
+        {
+          "match": "(?i)(#)?\\w+%(?=\\s|=|.|\\(|\\)|,)",
+          "name": "variable.bbj"
+        }
+      ]
+    },
+    "constants-and-special-vars": {
+      "patterns": [
+        {
+          "match": "(?i)\\b(true|false|null|process_events|remove_callback|read_resource|endtrace|addr|call|close|dim|drop|erase|eval|execute|exitto|field|gosub|goto|let|mkdir|open|print|read(\\srecord)?|redim|seterr|setesc|setopts|settrace|sqlopen|string|until)\\b",
+          "name": "constant.language.bbj"
+        },
+        {
+          "match": "\\bthis\\b",
+          "name": "variable.language.this.bbj"
+        },
+        {
+          "match": "\\bsuper\\b",
+          "name": "variable.language.bbj"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.single.bbj",
+          "match": "(?i)'([^'])*'"
+        },
+        {
+          "name": "string.quoted.double.bbj",
+          "match": "(?i)\\\"([^\"])*\\\""
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "match": "(?x)\n\\b(?<!\\$)\n0(x|X)\n(\n  (?<!\\.)[0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?[Ll]?(?!\\.)\n  |\n  (\n    [0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?\\.?\n    |\n    ([0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?)?\\.[0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?\n  )\n  [Pp][+-]?[0-9]([0-9_]*[0-9])?[FfDd]?\n)\n\\b(?!\\$)",
+          "name": "constant.numeric.hex.bbj"
+        },
+        {
+          "match": "\\b(?<!\\$)0(b|B)[01]([01_]*[01])?[Ll]?\\b(?!\\$)",
+          "name": "constant.numeric.binary.bbj"
+        },
+        {
+          "match": "\\b(?<!\\$)0[0-7]([0-7_]*[0-7])?[Ll]?\\b(?!\\$)",
+          "name": "constant.numeric.octal.bbj"
+        },
+        {
+          "match": "(?x)\n(?<!\\$)\n(\n  \\b[0-9]([0-9_]*[0-9])?\\.\\B(?!\\.)\n  |\n  \\b[0-9]([0-9_]*[0-9])?\\.([Ee][+-]?[0-9]([0-9_]*[0-9])?)[FfDd]?\\b\n  |\n  \\b[0-9]([0-9_]*[0-9])?\\.([Ee][+-]?[0-9]([0-9_]*[0-9])?)?[FfDd]\\b\n  |\n  \\b[0-9]([0-9_]*[0-9])?\\.([0-9]([0-9_]*[0-9])?)([Ee][+-]?[0-9]([0-9_]*[0-9])?)?[FfDd]?\\b\n  |\n  (?<!\\.)\\B\\.[0-9]([0-9_]*[0-9])?([Ee][+-]?[0-9]([0-9_]*[0-9])?)?[FfDd]?\\b\n  |\n  \\b[0-9]([0-9_]*[0-9])?([Ee][+-]?[0-9]([0-9_]*[0-9])?)[FfDd]?\\b\n  |\n  \\b[0-9]([0-9_]*[0-9])?([Ee][+-]?[0-9]([0-9_]*[0-9])?)?[FfDd]\\b\n  |\n  \\b(0|[1-9]([0-9_]*[0-9])?)(?!\\.)[Ll]?\\b\n)\n(?!\\$)",
+          "name": "constant.numeric.decimal.bbj"
+        }
+      ]
+    },
+    "logical": {
+      "patterns": [
+        {
+          "name": "keyword.operator.comparison.bbj",
+          "match": "(?i)(?<=\\s)(or|and|<=|>=|<>|<|>)(?=\\s)"
+        }
+      ]
+    },
+    "entity": {
+      "patterns": [
+        {
+          "name": "entity.name.tag.bbj",
+          "match": "(?i)(?<=\\s|^|=|\\()(return|methodret)(?=\\s)"
+        },
+        {
+          "match": "(?i)(?<=^)((\\s)+)?(\\w+:)(?=\\s)",
+          "name": "entity.name.tag.bbj"
+        },
+        {
+          "match": "(?i)(?<=^|\\s)def(?=\\s)",
+          "name": "entity.name.function.bbj"
+        },
+        {
+          "match": "(?i)(?<=^|\\s)fnend(?=\\s|$)",
+          "name": "entity.name.function.bbj"
+        }
+      ]
+    },
+    "function-call": {
+      "begin": "(#?[A-Za-z_$][\\w$]*)\\s*(\\()",
+      "beginCaptures": {
+        "1": {
+          "name": "entity.name.function.bbj"
+        },
+        "2": {
+          "name": "punctuation.definition.parameters.begin.bracket.round.bbj"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.parameters.end.bracket.round.bbj"
+        }
+      },
+      "name": "meta.function-call.bbj",
+      "patterns": [
+        {
+          "include": "#code"
+        }
+      ]
+    },
+    "object": {
+      "patterns": [
+        {
+          "match": "(?<![\\w$])[a-zA-Z_$][\\w$]*(?=\\s*\\.\\s*[\\w$]+)",
+          "name": "variable.other.object.bbj"
+        },
+        {
+          "match": "(?i)(?<=^|\\s)(class|classend|extends|implements)(?=\\s)",
+          "name": "support.class.bbj"
+        },
+        {
+          "match": "(?i)(?<=^|\\s)(method|methodend)(?=\\s)",
+          "name": "support.function.bbj"
+        },
+        {
+          "match": "(?i)(?<=^|\\s)(declare(\\sauto)?|public|private|protected|void|static)(?=\\s)",
+          "name": "storage.modifier.bbj"
+        },
+        {
+          "match": "(?i)(?<=^|\\s)(declare(\\sauto)?|field|declare|auto)(?=\\s)",
+          "name": "support.constant.bbj"
+        }
+      ]
+    },
+    "methods": {
+      "patterns": [
+        {
+          "name": "meta.method.declaration.js",
+          "begin": "(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(?:\\b(public|private|protected)\\s+)?(?:\\b(abstract)\\s+)?(?:\\b(async)\\s+)?(?:\\b(get|set)\\s+)(?:(\\*)\\s*)?(?=((([_$[:alpha:]][_$[:alnum:]]*)|(\\'([^\\'\\\\]|\\\\\\'|\\\\)*\\')|(\\\"([^\\\"\\\\]|\\\\\\\"|\\\\)*\\\")|(\\[([^\\[\\]]|\\[[^\\[\\]]*\\])+\\]))\\s*(\\??))\\s*[\\(\\<])",
+          "beginCaptures": {
+            "1": {
+              "name": "storage.modifier.js"
+            },
+            "2": {
+              "name": "storage.modifier.js"
+            },
+            "3": {
+              "name": "storage.modifier.async.js"
+            },
+            "4": {
+              "name": "storage.type.property.js"
+            },
+            "5": {
+              "name": "keyword.generator.asterisk.js"
+            }
+          },
+          "end": "(?=\\}|;|,|$)|(?<=\\})",
+          "patterns": [
+            {
+              "include": "#code"
+            }
+          ]
+        }
+      ]
+    },
+    "method-call": {
+      "begin": "(\\.)\\s*([A-Za-z_$][\\w$]*)\\s*(\\()",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.separator.period.bbj"
+        },
+        "2": {
+          "name": "entity.name.function.bbj"
+        },
+        "3": {
+          "name": "punctuation.definition.parameters.begin.bracket.round.bbj"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.parameters.end.bracket.round.bbj"
+        }
+      },
+      "name": "meta.method-call.bbj",
+      "patterns": [
+        {
+          "include": "#code"
+        }
+      ]
+    },
+    "parameters": {
+      "patterns": [
+        {
+          "match": "(?i)(#)?(\\w+\\.)?\\w+\\$(?=\\s|=|<|>|\\(|\\)|,|\\+|:|;|\\[)",
+          "name": "variable.parameter.bbj"
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.delimiter.bbj"
+        },
+        {
+          "match": "\\.\\.\\.",
+          "name": "punctuation.definition.parameters.varargs.bbj"
+        }
+      ]
+    },
+    "properties": {
+      "patterns": [
+        {
+          "match": "(\\.)\\s*([a-zA-Z_$][\\w$]*)(?=\\s*\\.\\s*[a-zA-Z_$][\\w$]*)",
+          "captures": {
+            "1": {
+              "name": "punctuation.separator.period.bbj"
+            },
+            "2": {
+              "name": "variable.other.object.property.bbj"
+            }
+          }
+        },
+        {
+          "match": "(\\.)\\s*([a-zA-Z_$][\\w$]*)",
+          "captures": {
+            "1": {
+              "name": "punctuation.separator.period.bbj"
+            },
+            "2": {
+              "name": "variable.other.property.bbj"
+            }
+          }
+        },
+        {
+          "match": "(\\.)\\s*([0-9][\\w$]*)",
+          "captures": {
+            "1": {
+              "name": "punctuation.separator.period.bbj"
+            },
+            "2": {
+              "name": "invalid.illegal.identifier.bbj"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
